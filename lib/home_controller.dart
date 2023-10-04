@@ -1,4 +1,3 @@
-import 'package:consulta_cep_dio/cep_model.dart';
 import 'package:consulta_cep_dio/home_repository.dart';
 import 'package:flutter/foundation.dart';
 

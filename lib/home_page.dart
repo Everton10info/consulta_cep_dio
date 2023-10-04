@@ -58,9 +58,13 @@ class _HomePageState extends State<HomePage> {
             height: 36,
           ),
           ElevatedButton(
-              onPressed: () async {
-                await widget.homeController
-                    .findCep(_textEditingController.text);
+              onPressed: () {
+                widget.homeController.findCep(_textEditingController.text).then(
+                    (value) =>
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text(value),
+                          backgroundColor: Colors.green[400],
+                        )));
               },
               child: const Text('Buscar')),
           Expanded(
