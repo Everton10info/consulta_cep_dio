@@ -1,10 +1,10 @@
 import 'dart:convert';
-
 import 'package:http/http.dart' as http;
 
 abstract interface class HomeData {
-  Future<dynamic> getCep(String code);
-  Future<dynamic> getDB(String code);
+  Future<Map<String, dynamic>> getCep(String code);
+  Future<Map<String, dynamic>> getDB(String code);
+  Future<List> getList();
   Future<dynamic> addCep(cep);
   deleteData(String id);
 }
@@ -17,30 +17,32 @@ class HomeDataImpl implements HomeData {
   }
 
   @override
-  Future<dynamic> getCep(code) async {
-    final urlBuscaCep = 'http://viacep.com.br/ws/$code/json/';
+  Future<Map<String, dynamic>> getCep(code) async {
+    final cep = code.replaceAll('-', '');
+    final urlBuscaCep = 'http://viacep.com.br/ws/$cep/json/';
     final result = await http.get(Uri.parse(urlBuscaCep));
 
     if (result.statusCode == 200) {
-      print(result.body);
       return jsonDecode(result.body);
     } else {
-      print(result.statusCode);
       throw result.statusCode;
     }
   }
 
   @override
-  Future getDB(String code) async {
-    final urlBuscaCep = 'http://viacep.com.br/ws/$code/json/';
-    final result = await http.get(Uri.parse(urlBuscaCep));
+  Future<Map<String, dynamic>> getDB(String code) async {
+    const String urlAddCep = 'https://parseapi.back4app.com/classes/cep';
+    try {
+      final result = await http
+          .get(Uri.parse('$urlAddCep?where={"cep":"$code"}'), headers: {
+        "X-Parse-Application-Id": "Puc4W5ugN4xcsrZeE2hi5q0TaW9v6NakDthKRyHh",
+        "X-Parse-REST-API-Key": "wA0T5iBvfALHj68biMX0qKD7XNYmDmXkJeXuyqc9",
+        "Content-Type": "application/json",
+      });
 
-    if (result.statusCode == 200) {
-      print(result.body);
       return jsonDecode(result.body);
-    } else {
-      print(result.statusCode);
-      throw result.statusCode;
+    } catch (e) {
+      rethrow;
     }
   }
 
@@ -54,11 +56,22 @@ class HomeDataImpl implements HomeData {
           "Content-Type": "application/json",
         },
         body: jsonEncode(cep));
-    print('${result.body}+ deuuuuuu');
+    print('${result.body}+ add');
+  }
+
+  @override
+  Future<List> getList() async {
+    const String urlAddCep = 'https://parseapi.back4app.com/classes/cep';
+    try {
+      final result = await http.get(Uri.parse(urlAddCep), headers: {
+        "X-Parse-Application-Id": "Puc4W5ugN4xcsrZeE2hi5q0TaW9v6NakDthKRyHh",
+        "X-Parse-REST-API-Key": "wA0T5iBvfALHj68biMX0qKD7XNYmDmXkJeXuyqc9",
+        "Content-Type": "application/json",
+      });
+      print('${jsonDecode(result.body)['results'].runtimeType}');
+      return jsonDecode(result.body)['results'];
+    } catch (e) {
+      rethrow;
+    }
   }
 }
-/* X-Parse-Application-Id: Puc4W5ugN4xcsrZeE2hi5q0TaW9v6NakDthKRyHh
-
-X-Parse-REST-API-Key: wA0T5iBvfALHj68biMX0qKD7XNYmDmXkJeXuyqc9
-
-Content-Type: application/json */

@@ -1,5 +1,6 @@
+import 'package:consulta_cep_dio/cep_model.dart';
 import 'package:consulta_cep_dio/home_controller.dart';
-import 'package:consulta_cep_dio/home_data.dart';
+import 'package:consulta_cep_dio/utils.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -15,16 +16,16 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String cep = '';
+  List<Cep> cep = [];
   final _textEditingController = TextEditingController();
   @override
   void initState() {
-    // init();
+    init();
     super.initState();
   }
 
   init() async {
-    // cep = await widget.homeController.findCep('960280');
+    cep = await widget.homeController.showList();
   }
 
   @override
@@ -49,6 +50,9 @@ class _HomePageState extends State<HomePage> {
           TextFormField(
             keyboardType: TextInputType.number,
             controller: _textEditingController,
+            inputFormatters: [
+              MaskFormatter.cepMaskFormatter,
+            ],
           ),
           const SizedBox(
             height: 36,
@@ -60,10 +64,19 @@ class _HomePageState extends State<HomePage> {
               },
               child: const Text('Buscar')),
           Expanded(
-              child: ListView.builder(
-            itemCount: 22,
-            itemBuilder: (context, index) {
-              return Text('ceps');
+              child: ValueListenableBuilder(
+            valueListenable: widget.homeController.listCeps,
+            builder: (BuildContext context, value, Widget? child) {
+              final list = widget.homeController.listCeps.value;
+              return ListView.builder(
+                itemCount: list.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    leading: Text(list[index].localidade ?? ''),
+                    title: Text(list[index].cep),
+                  );
+                },
+              );
             },
           ))
         ]),

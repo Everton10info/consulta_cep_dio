@@ -1,6 +1,5 @@
-import 'package:consulta_cep_dio/cep_model.dart';
-import 'package:consulta_cep_dio/home_data.dart';
-import 'package:http/http.dart';
+import 'cep_model.dart';
+import 'home_data.dart';
 
 class Homerepository {
   final HomeData data;
@@ -8,17 +7,33 @@ class Homerepository {
   Homerepository({required this.data});
   deletecep() {}
 
-  Future<Cep> getcep(cep) async {
+  Future<String> getcep(cep) async {
     try {
-      final res = await data.getCep(cep).then((value) => data.addCep(value));
-      print(res);
-      return Cep.fromJson(res);
+      final resDb = await data.getDB(cep);
+      print(resDb["results"]);
+      if (resDb["results"].isEmpty) {
+        await data.getCep(cep).then((value) => data.addCep(value));
+
+        return 'Cep Validaoo!';
+      }
+      return 'Cep Invalido';
     } catch (error) {
-      return Cep();
+      return error.toString();
     }
   }
-}
 
-class CepError extends ClientException {
-  CepError(super.message);
+  Future<List<Cep>> showCep() async {
+    List<Cep> listCep = [];
+    try {
+      final resDb = await data.getList();
+
+      for (var i = 0; i < resDb.length; i++) {
+        listCep.add(Cep.fromJson(resDb[i]));
+      }
+
+      return listCep;
+    } catch (error) {
+      return [];
+    }
+  }
 }
