@@ -1,4 +1,5 @@
 class Cep {
+  final String? objectId;
   final String? cep;
   final String? logradouro;
   final String? bairro;
@@ -6,6 +7,7 @@ class Cep {
   final String? uf;
 
   Cep({
+    this.objectId,
     this.cep,
     this.logradouro,
     this.bairro,
@@ -24,6 +26,7 @@ class Cep {
 
   static Cep fromJson(Map<String, dynamic> json) {
     return Cep(
+      objectId: json['objectId'] ?? '',
       cep: json['cep'],
       logradouro: json['logradouro'],
       bairro: json['bairro'],

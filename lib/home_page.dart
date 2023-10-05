@@ -16,7 +16,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<Cep> cep = [];
   final _textEditingController = TextEditingController();
   @override
   void initState() {
@@ -25,7 +24,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   init() async {
-    cep = await widget.homeController.showList();
+    await widget.homeController.showList();
   }
 
   @override
@@ -73,11 +72,21 @@ class _HomePageState extends State<HomePage> {
             builder: (BuildContext context, value, Widget? child) {
               final list = widget.homeController.listCeps.value;
               return ListView.builder(
+                reverse: true,
                 itemCount: list.length,
                 itemBuilder: (context, index) {
-                  return ListTile(
-                    leading: Text(list[index].localidade ?? ''),
-                    title: Text(list[index].cep),
+                  return Card(
+                    child: ListTile(
+                      leading: Text(list[index].localidade ?? ''),
+                      title: Text(list[index].cep),
+                      trailing: IconButton(
+                        icon: const Icon(Icons.delete),
+                        onPressed: () async {
+                          await widget.homeController
+                              .deleteCep(list[index].objectId);
+                        },
+                      ),
+                    ),
                   );
                 },
               );

@@ -18,4 +18,9 @@ class HomeController {
   Future showList() async {
     listCeps.value = await repository.showCep();
   }
+
+  deleteCep(String id) async {
+    await repository.deletecep(id);
+    await showList();
+  }
 }

@@ -5,7 +5,9 @@ class Homerepository {
   final HomeData data;
 
   Homerepository({required this.data});
-  deletecep() {}
+  deletecep(String id) async {
+    await data.deleteData(id);
+  }
 
   Future<String> getcep(cep) async {
     try {
@@ -14,7 +16,7 @@ class Homerepository {
       if (resDb["results"].isEmpty) {
         await data.getCep(cep).then((value) => data.addCep(value));
 
-        return 'Cep Encontrado!';
+        return 'Cep Encontrado!'; //ver issoo
       }
       return 'Cep Invalido';
     } catch (error) {
