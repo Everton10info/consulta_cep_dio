@@ -11,16 +11,18 @@ class Homerepository {
 
   Future<String> getcep(cep) async {
     try {
-      final resDb = await data.getDB(cep);
+      final resultDb = await data.getDB(cep);
+      if (resultDb["results"].isNotEmpty) return 'Cep já listado!';
 
-      if (resDb["results"].isEmpty) {
-        await data.getCep(cep).then((value) => data.addCep(value));
+      final result = await data.getCep(cep);
 
-        return 'Cep Encontrado!'; //ver issoo
-      }
+      if (result["erro"] == true) return 'Cep Invalido';
+
+      await data.addCep(result);
+
+      return 'Cep Encontrado!';
+    } catch (e) {
       return 'Cep Invalido';
-    } catch (error) {
-      return '';
     }
   }
 

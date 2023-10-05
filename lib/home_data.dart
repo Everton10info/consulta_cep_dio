@@ -13,14 +13,12 @@ abstract interface class HomeData {
 class HomeDataImpl implements HomeData {
   @override
   deleteData(String id) async {
-    print('$id === id');
     final urldellCep = 'https://parseapi.back4app.com/classes/cep/$id';
     final result = await http.delete(Uri.parse(urldellCep), headers: {
       "X-Parse-Application-Id": "Puc4W5ugN4xcsrZeE2hi5q0TaW9v6NakDthKRyHh",
       "X-Parse-REST-API-Key": "wA0T5iBvfALHj68biMX0qKD7XNYmDmXkJeXuyqc9",
       "Content-Type": "application/json",
     });
-    print(result.body);
   }
 
   @override
@@ -58,14 +56,13 @@ class HomeDataImpl implements HomeData {
   @override
   Future addCep(cep) async {
     const String urlAddCep = 'https://parseapi.back4app.com/classes/cep';
-    final result = await http.post(Uri.parse(urlAddCep),
+    await http.post(Uri.parse(urlAddCep),
         headers: {
           "X-Parse-Application-Id": "Puc4W5ugN4xcsrZeE2hi5q0TaW9v6NakDthKRyHh",
           "X-Parse-REST-API-Key": "wA0T5iBvfALHj68biMX0qKD7XNYmDmXkJeXuyqc9",
           "Content-Type": "application/json",
         },
         body: jsonEncode(cep));
-    print('${result.body}+ add');
   }
 
   @override
@@ -77,7 +74,7 @@ class HomeDataImpl implements HomeData {
         "X-Parse-REST-API-Key": "wA0T5iBvfALHj68biMX0qKD7XNYmDmXkJeXuyqc9",
         "Content-Type": "application/json",
       });
-      print('${jsonDecode(result.body)['results'].runtimeType}');
+
       return jsonDecode(result.body)['results'];
     } catch (e) {
       rethrow;

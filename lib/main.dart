@@ -17,9 +17,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: ColorScheme.fromSwatch(
-          primarySwatch: Colors.lightGreen,
-          backgroundColor: Colors.white,
-        ),
+            primarySwatch: Colors.lightGreen,
+            backgroundColor: Colors.white,
+            accentColor: Colors.lightGreen,
+            cardColor: Colors.white),
       ),
       debugShowCheckedModeBanner: false,
       home: HomePage(

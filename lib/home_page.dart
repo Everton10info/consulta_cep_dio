@@ -47,6 +47,11 @@ class _HomePageState extends State<HomePage> {
             height: 36,
           ),
           TextFormField(
+            decoration: const InputDecoration(
+                contentPadding: EdgeInsets.symmetric(horizontal: 20),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(16)),
+                )),
             keyboardType: TextInputType.number,
             controller: _textEditingController,
             inputFormatters: [
@@ -67,31 +72,44 @@ class _HomePageState extends State<HomePage> {
               },
               child: const Text('Buscar')),
           Expanded(
+              flex: 2,
+              child: ListenableBuilder(
+                listenable: widget.homeController.isLoader,
+                builder: (context, child) {
+                  return widget.homeController.isLoader.value
+                      ? const Center(
+                          child: LinearProgressIndicator(
+                          minHeight: 12,
+                        ))
+                      : const SizedBox.shrink();
+                },
+              )),
+          Expanded(
+              flex: 9,
               child: ValueListenableBuilder(
-            valueListenable: widget.homeController.listCeps,
-            builder: (BuildContext context, value, Widget? child) {
-              final list = widget.homeController.listCeps.value;
-              return ListView.builder(
-                reverse: true,
-                itemCount: list.length,
-                itemBuilder: (context, index) {
-                  return Card(
-                    child: ListTile(
-                      leading: Text(list[index].localidade ?? ''),
-                      title: Text(list[index].cep),
-                      trailing: IconButton(
-                        icon: const Icon(Icons.delete),
-                        onPressed: () async {
-                          await widget.homeController
-                              .deleteCep(list[index].objectId);
-                        },
-                      ),
-                    ),
+                valueListenable: widget.homeController.listCeps,
+                builder: (BuildContext context, value, Widget? child) {
+                  final list = widget.homeController.listCeps.value;
+                  return ListView.builder(
+                    itemCount: list.length,
+                    itemBuilder: (context, index) {
+                      return Card(
+                        child: ListTile(
+                          leading: Text(list[index].localidade ?? ''),
+                          title: Text(list[index].cep),
+                          trailing: IconButton(
+                            icon: const Icon(Icons.delete),
+                            onPressed: () async {
+                              await widget.homeController
+                                  .deleteCep(list[index].objectId);
+                            },
+                          ),
+                        ),
+                      );
+                    },
                   );
                 },
-              );
-            },
-          ))
+              ))
         ]),
       ),
     );
