@@ -16,11 +16,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         useMaterial3: true,
-        colorScheme: ColorScheme.fromSwatch(
-            primarySwatch: Colors.lightGreen,
-            backgroundColor: Colors.white,
-            accentColor: Colors.lightGreen,
-            cardColor: Colors.white),
+        colorScheme: const ColorScheme.light(
+          primary: Color.fromARGB(255, 162, 222, 193),
+        ),
       ),
       debugShowCheckedModeBanner: false,
       home: HomePage(

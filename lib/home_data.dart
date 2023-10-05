@@ -14,7 +14,7 @@ class HomeDataImpl implements HomeData {
   @override
   deleteData(String id) async {
     final urldellCep = 'https://parseapi.back4app.com/classes/cep/$id';
-    final result = await http.delete(Uri.parse(urldellCep), headers: {
+    await http.delete(Uri.parse(urldellCep), headers: {
       "X-Parse-Application-Id": "Puc4W5ugN4xcsrZeE2hi5q0TaW9v6NakDthKRyHh",
       "X-Parse-REST-API-Key": "wA0T5iBvfALHj68biMX0qKD7XNYmDmXkJeXuyqc9",
       "Content-Type": "application/json",
