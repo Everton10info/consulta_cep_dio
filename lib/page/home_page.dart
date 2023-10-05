@@ -1,5 +1,5 @@
-import 'package:consulta_cep_dio/home_controller.dart';
-import 'package:consulta_cep_dio/utils.dart';
+import 'package:consulta_cep_dio/controller/home_controller.dart';
+import 'package:consulta_cep_dio/shared/utils.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {

@@ -1,5 +1,5 @@
-import 'cep_model.dart';
-import 'home_data.dart';
+import '../data/cep_model.dart';
+import '../data/home_data.dart';
 
 class Homerepository {
   final HomeData data;

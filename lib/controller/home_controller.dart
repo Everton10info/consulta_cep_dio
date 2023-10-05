@@ -1,4 +1,4 @@
-import 'package:consulta_cep_dio/home_repository.dart';
+import 'package:consulta_cep_dio/repository/home_repository.dart';
 import 'package:flutter/foundation.dart';
 
 class HomeController {
