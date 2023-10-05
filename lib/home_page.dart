@@ -16,6 +16,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final _textEditingController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -27,11 +28,13 @@ class _HomePageState extends State<HomePage> {
           Align(
             child: ElevatedButton(
                 style: ButtonStyle(
+                  maximumSize: MaterialStateProperty.all(Size.infinite),
                   minimumSize: MaterialStateProperty.all(
-                    const Size.fromWidth(300),
+                    const Size.fromWidth(324),
                   ),
                 ),
                 onPressed: () {
+                  if (!_formKey.currentState!.validate()) return;
                   widget.homeController
                       .findCep(_textEditingController.text)
                       .then((value) =>
@@ -68,17 +71,26 @@ class _HomePageState extends State<HomePage> {
                   const SizedBox(
                     height: 36,
                   ),
-                  TextFormField(
-                    decoration: const InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(horizontal: 20),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(16)),
-                        )),
-                    keyboardType: TextInputType.number,
-                    controller: _textEditingController,
-                    inputFormatters: [
-                      MaskFormatter.cepMaskFormatter,
-                    ],
+                  Form(
+                    key: _formKey,
+                    child: TextFormField(
+                      decoration: const InputDecoration(
+                          contentPadding: EdgeInsets.symmetric(horizontal: 20),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(16)),
+                          )),
+                      keyboardType: TextInputType.number,
+                      controller: _textEditingController,
+                      inputFormatters: [
+                        MaskFormatter.cepMaskFormatter,
+                      ],
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Campo Obrigatório!';
+                        }
+                        return null;
+                      },
+                    ),
                   ),
                   const SizedBox(
                     height: 36,
