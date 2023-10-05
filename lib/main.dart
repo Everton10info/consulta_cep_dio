@@ -1,8 +1,8 @@
-import 'package:consulta_cep_dio/home_controller.dart';
-import 'package:consulta_cep_dio/home_data.dart';
-import 'package:consulta_cep_dio/home_repository.dart';
+import 'package:consulta_cep_dio/controller/home_controller.dart';
+import 'package:consulta_cep_dio/data/home_data.dart';
+import 'package:consulta_cep_dio/repository/home_repository.dart';
 import 'package:flutter/material.dart';
-import 'home_page.dart';
+import 'page/home_page.dart';
 
 void main() {
   runApp(const MyApp());
